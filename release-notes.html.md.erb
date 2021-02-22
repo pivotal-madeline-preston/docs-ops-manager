@@ -25,6 +25,13 @@ on the Cloud Foundry website.
 
 **Release Date:** February 11, 2021
 
+**[Known Issue]**
+Ops Manager v2.10.7 has an issue sending BOSH System metrics to the Firehose. This
+will cause a loss of monitoring for systems relying on [these metrics](https://docs.pivotal.io/application-service/2-10/overview/monitoring/kpi.html#bosh)
+including Healthwatch and other downstream monitoring implementations.
+
+For more information, see the [Healthwatch smoke test failing with Ops Manager v2.10.7](https://community.pivotal.io/s/article/Healthwatch-smoke-test-failing-with-Ops-Manager-v2-10-7) Knowledge Base article.
+
 - **[Bug Fix]** Signature version is included in S3 CLI on BOSH Director
 - **[Bug Fix]** `10.x.x.x` IP addresses are recorded in the audit log under a new field called `forwarded_for`
 - **[Bug Fix]** Improve performance speed of streaming the manifest diff
