@@ -38,11 +38,16 @@ an upgrade path for your product tiles, see the [Upgrade Planner](https://upgrad
 
 ## <a id="bosh-dns-migration"></a> BOSH DNS Certificates Regeneration
 
-Starting in <%= vars.ops_manager %> v2.10.9 and later, BOSH DNS leaf certificates are generated to include the subject alternative name (SAN) field. The inclusion of the SAN field was made a requirement in Go 1.15 and later, which many components deployed by Ops Manager such as BOSH DNS require.
+In <%= vars.ops_manager %> v2.10.9 and later, BOSH DNS leaf certificates are generated to include the subject alternative name (SAN) field.
 
-Upon upgrading to 2.10.9 and later, the BOSH DNS leaf certificates will be automatically regenerated to include the SAN field on the next Apply Changes. You must redeploy all tiles and upgrade all service instances to ensure the new version of the BOSH DNS leaf certificates are distributed to all VMs. This automatic regeneration is also done on <%= vars.ops_manager %> v2.7.30, v2.8.16, and v2.9.18.
+When you upgrade to v2.10.9 or later, the BOSH DNS leaf certificates are automatically regenerated to include the SAN field on the next **Apply Changes**.
 
-<p class="note warning"><strong>Warning:</strong> A future patch version of <%= vars.ops_manager %> v2.10 will require that BOSH DNS certificates have been redeployed with a SAN. If you do not redeploy all tiles and upgrade all service instances after the BOSH DNS leaf certifcates have been regenerated, you may experience communication errors between system components, deployed applications, and service instances, which could result in downtime.</p>
+To allow DNS certificate regeneration and avoid communication issues between system commonents:
+
+1. Run the **Upgrade service instances** errand on all service tiles.
+
+1. **Apply Changes** to all tiles.
+
 
 ## <a id="jump-upgrade"></a> Jump Upgrade
 
