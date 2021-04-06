@@ -77,7 +77,7 @@ v2.4 through v2.8 and how to address them before upgrading:
 	</tr>
 	<tr>
 		<td>Any to v2.10.9 or later</td>
-		<td>BOSH DNS leaf certificates are generated to include the subject alternative name (SAN) field.</td>
+		<td>BOSH DNS leaf certificates are generated to include the subject alternative name (SAN) field. If you do not distribute the BOSH DNS leaf certificates to all VMs, you can experience downtime caused by communication issues between system components.</td>
 		<td>Run the <strong>Upgrade service instances</strong> errand on all service tiles and <strong>Apply Changes</strong> to all tiles. For more information, see <a href="#bosh-dns-migration">BOSH DNS Certificates Regeneration</a> above</td>
 	</tr>
 	<tr>
