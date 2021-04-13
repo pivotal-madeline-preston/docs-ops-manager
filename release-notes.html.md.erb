@@ -474,6 +474,18 @@ For more information, see [Troubleshooting CredHub Maestro Safety Violations Dur
 
 <%= vars.ops_manager %> v2.10 includes the following breaking changes:
 
+### <a id="cert-regeneration"></a> BOSH DNS Certificates Regeneration
+
+In <%= vars.ops_manager %> v2.10.9 and later, BOSH DNS leaf certificates are automatically regenerated to include the SAN field. On upgrade, you must redeploy all tiles and upgrade all service instances to distribute the BOSH DNS leaf certificates to all VMs.
+
+To allow DNS certificate regeneration and avoid communication issues between system components:
+
+1. On upgrade, run the **Upgrade service instances** errand on all service tiles.
+
+1. **Apply Changes** to all tiles.
+
+If you do not redeploy all tiles and upgrade all service instances, you can experience downtime.
+
 ### <a id='credhub-regenerate'></a> CredHub Maestro Removes the "update-transitional latest" Command
 
 Ops Manager v2.10 includes CredHub Maestro v8.0.
