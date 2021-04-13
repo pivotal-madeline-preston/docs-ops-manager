@@ -32,6 +32,8 @@ on the Cloud Foundry website.
 - **[Bug Fix]** Copying credentials to CredHub during **Apply Changes** does not fail due to volume or slowness
 - **[Bug Fix]** NATS leaf certificates shows on `/api/v0/deployed/certificates` endpoint
 - **[Bug Fix]** <%= vars.ops_manager %> UAA logs are log rotated
+- **[Bug Fix]** Restrict permissions on the `/home/tempest-web` and `/home/ubuntu` directories to 750
+- **[Bug Fix]** The `service tempest-web restart` command reliably connects with <%= vars.ops_manager %> without frequent 502 gateway errors
 
 
 Ops Manager v2.10.9 uses the following component versions:
