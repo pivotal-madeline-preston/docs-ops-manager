@@ -26,6 +26,7 @@ on the Cloud Foundry website.
 **Release Date:** April 13, 2021
 
 - **[Breaking Change]** On **Apply Changes**, <%= vars.ops_manager %> generates new BOSH DNS certificates with a subject alternative name (SAN). On upgrade to v2.10.9 and later, you must run the **Upgrade service instances** errand on service tiles and **Apply Changes** to all tiles.
+- **[Known Issue]** Due to permission changes, running `uaac` as the `ubuntu` user results in the error `/home/tempest-web/tempest/web/vendor/uaac/Gemfile not found`. The current work around is to run `unalias uaac` as the `ubuntu` user before running `uaac`.
 - **[Feature]** vSphere users have the option to use the Policy API when placing VMs in policy NSX-T groups by enabling **Use NSX-T Policy API** in the **vCenter Config** pane of the BOSH Director tile
 - **[Feature]** The **Putting Tile Credentials into CredHub** step of **Apply Changes** produces more diagnostic output
 - **[Bug Fix]** The **Internet Connected** checkbox appears on the **Resource Config** pane for AWS
