@@ -1,0 +1,108 @@
+---
+Title: Performing a Certificate Rotation in Tanzu Ops Manager when customer-provided Certificate Authorities have been installed in CredHub
+owner: Ops Manager
+---
+
+This topic describes the special procedures required to handle customer-provided Certificate Authorities during a <%= vars.ops_manager %> certificate rotation.
+
+
+## <a id='overview'></a> Overview
+
+Because of the design of CredHub Maestro, manual steps must be taken at the beginning of the Certificate Rotation process in order to correctly handle customer-provided Certificate Authorities (CAs). 
+
+One of two methods can be used to handle customer-provided CAs. Both methods are equally effective, but each method is employed at a different point in the Certificate Rotation process. 
+
+Method One must be used before the Certificate Rotation process has begun. Method Two can only be used after it has begun, but -unlike Method One- can be used after you have encountered the `certificate authorities latest version is not transitional` Maestro error during Certificate Rotation.
+
+If you are unsure whether customer-provided CAs are installed, follow the steps in the Prerequisites section to check.
+
+## <a id='prerequisites'></a> Prerequisites
+
+Determine if there are Customer-provided (CAs), and record the CredHub Path to any such installed CAs. They can be identified in one of three ways:
+
+From the Ops Manager `Certificates` page:
+  Customer-provided CAs will have the properties `Location` = `credhub`, `Type` = `CA`, `Configurable` = `true`.
+  The CredHub Path to the CA will appear in the `Certificate name` column.
+
+From the `api/v0/deployed/certificates` endpoint:
+  Customer-provided CAs will have the properties `configurable` = `true`, `location` = `credhub`, and `is_ca` = `true`.
+  The CredHub Path to the CA will appear in the `variable_path` property.
+
+Directly from CredHub:
+ Customer-provided CAs will have the properties `generated` = `false` and `certificate_authority` = `true`.
+
+If no Customer-provided CAs are found, then Certificate Rotation can proceed as normal.
+
+## <a id='method-one'></a>Method One: Instruct CredHub Maestro to ignore the customer-provided CAs.
+Pass the list of CredHub Paths to the customer-provided CAs to the `exclude_from_rotation` parameter to either the `api/v0/certificate_authorities/generate` or the `api/v0/certificate_authorities` endpoint.
+
+The payload that must be provided to the request has the following structure:
+
+```
+{
+  "exclude_from_rotation": {
+    "certificate_authorities": ["/services/tls_ca", "/credhub/path/to/user_provided_ca1", "/credhub/path/to/user_provided_ca2"]
+  }
+}
+```
+
+<p class="note"><strong>Note:</strong> You will need to get the CredHub paths to the customer-provided CAs. The procedure to do this is detailed in the "Prerequisites" section of this document.</p>
+
+<p class="note warning"><strong>Warning:</strong> the "/services/tls_ca" CA <strong>must</strong> be included along with the paths to the customer-provided CAs. Failure to include this CA in the list of CAs will result in service disruption during the certificate rotation process.</p>
+
+Once you successfully make this request, you can proceed with the normal Certificate Rotation process.
+
+## <a id='method-two'></a> Method Two: Manually replace the customer-provided CAs and manually mark them as "Transitional".
+
+This method must be performed after rotation has been started; it cannot be performed before rotation has started. It should be performed immediately after rotation has been started, but can be performed after Maestro emits the `certificate authorities latest version is not transitional` error.
+
+The steps in this method are as follows:
+
+1) Use `credhub set` to update each customer-provided CA with a new version of that CA.
+2) Use `credhub curl` on the `api/v1/certificates/:certificate_id/update_transitional_version` API endpoint to set the transitional flag for each customer-provided CA.
+
+Because there are already customer-provided CAs loaded into CredHub, it is assumed that you are familar with the `credhub set` command, so no further guidance on that command will be provided.
+
+The structure of the `credhub curl` invocation to set the `transitional` flag on the CAs is as follows:
+
+```
+credhub curl -i -X PUT -p api/v1/certificates/$CERTIFICATE_ID/update_transitional_version -d '{"version": "$VERSION_ID"}'
+```
+
+So, in order to set the `transitional` flag, you must gather the certificate ID of each certificate and the version ID of the latest version of each certificate.
+
+To retrieve the certificate ID of each certificate that must be updated, consult the output of `maestro topology`. The most recent version of a certificate should be the first item in the `versions` array associated with that certificate.
+
+The response from `maestro topology` might look like:
+
+```
+topology:
+    - name: /customer-provided-ca
+      certificate_id: 75b9f5a6-f3c6-42f8-a834-3cfa6098c73a
+      signed_by: /customer-provided-ca
+      versions:
+        - version_id: 7e172086-a08d-4e62-98ba-308942a52e8a
+          certificate_authority: true
+          generated: false
+          valid_until: 2022-04-09T21:20:23Z
+        - version_id: b942c826-e64b-4a75-8a9a-9dd109551daf
+          active: true
+          signing: true
+          certificate_authority: true
+          generated: false
+          valid_until: 2022-04-09T21:19:55Z
+      signs:
+        - name: /bosh_dns_health_client_tls
+          certificate_id: cba8b8e7-e7ec-4584-bce1-e41d75f1511b
+          signed_by: /customer-provided-ca
+          versions:
+            - version_id: b70ae8c0-91a5-4155-9545-a4c6e921bb03
+              generated: true
+              active: true
+              valid_until: 2022-04-09T23:30:45Z
+```
+
+Given this output, you will use the `update_transitional_version` endpoint on the certificate with the id `75b9f5a6-f3c6-42f8-a834-3cfa6098c73a` and the version with the id `7e172086-a08d-4e62-98ba-308942a52e8a`.
+
+After performing this operation on each customer-provided CA, you can continue with the normal Certificate Rotation process.
+
