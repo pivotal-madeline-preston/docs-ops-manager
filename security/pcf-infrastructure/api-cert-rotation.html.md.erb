@@ -23,9 +23,11 @@ Before determining which certificate rotation procedure to follow, you must dete
 
 * Which types of CAs and leaf certificates exist in your deployment.
 * Which CAs and leaf certificates are due to expire soon.
+* Whether customer-provided CAs exist in your deployment.
 
 To check the types and expiration dates of your certificates, see [Checking Expiration Dates and Certificate Types](check-expiration.html).
 
+If customer-provided CAs exist in your deployment, then an additional procedure must be followed in order for certificate rotation to be successful. The procedure for discovering if customer-provided CAs are present, as well as the procedure for handling those CAs can be found at [Performing a Certificate Rotation With Customer-provided Certificate Authorities](rotate-customer-provided-cas.html)
 
 ## <a id='procedures'></a> Certificate Rotation Procedures
 
