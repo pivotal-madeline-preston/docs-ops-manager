@@ -38,6 +38,10 @@ You can install <%= vars.platform_name %> with one of two runtimes. For more inf
     * **Without NSX-T:** [vSphere Prerequisites and Resource Requirements](https://docs.pivotal.io/tkgi/vsphere-requirements.html)
     * **With NSX-T:** See the _Preparing to Install <%= vars.k8s_runtime_abbr %> on vSphere with NSX-T_ section of [Installing <%= vars.k8s_runtime_abbr %> on vSphere with NSX-T Data Center](https://docs.pivotal.io/tkgi/vsphere-nsxt-index.html).
 
+### <a id='firewall'></a> Firewall Port Requirements
+
+<%= partial '../common/vsphere-firewall-ports' %>
+
 ### <a id='permissions'></a> vSphere Service Account Requirements
 
 <%= vars.ops_manager %> requires read/write permissions to the data center level of the [vSphere Inventory Hierarchy](https://docs.vmware.com/en/VMware-vSphere/6.5/com.vmware.vsphere.security.doc/GUID-03B36057-B38C-479C-BD78-341CD83A0584.html) to successfully install. <%= vars.company_name %> recommends defining a custom role for the service account that has all privileges for all objects in the data center, including propagating privileges to children.
@@ -84,7 +88,7 @@ See the following topics for additional configuration options:
 
 ## <a id="next"></a> Next Steps
 
-After completing the procedures above, configure a runtime.
+After completing the procedures abovez, configure a runtime.
 
 For information about installing and configuring a runtime, see the following:
 
