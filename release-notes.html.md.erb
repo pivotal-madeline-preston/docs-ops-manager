@@ -80,7 +80,7 @@ Ops Manager v2.10.11 uses the following component versions:
 
 **Release Date:** April 27, 2021
 
-- **[Bug Fix]** <%= vars.ops_manager %> does not overwrite UAAC
+- **[Known Issue Fix]** <%= vars.ops_manager %> does not overwrite UAAC. Known issue is introduced in <%= vars.ops_manager %> v2.10.9. 
 - **[Bug Fix]** Regenerating leaf certificates succeed when CredHub server certificate is expired
 
 Ops Manager v2.10.10 uses the following component versions:
@@ -108,7 +108,7 @@ Ops Manager v2.10.10 uses the following component versions:
 **Release Date:** April 13, 2021
 
 - **[Breaking Change]** On **Apply Changes**, <%= vars.ops_manager %> generates new BOSH DNS certificates with a subject alternative name (SAN). On upgrade to v2.10.9 and later, you must run the **Upgrade service instances** errand on service tiles and **Apply Changes** to all tiles. Upgrading <%= vars.ops_manager %> while a CA rotation is in progress results in the inability to **Apply Changes** due to safety violations.
-- **[Known Issue]** Due to permission changes, running `uaac` as the `ubuntu` user results in the error `/home/tempest-web/tempest/web/vendor/uaac/Gemfile not found`. The current work around is to run `unalias uaac` as the `ubuntu` user before running `uaac`.
+- **[Known Issue]** Due to permission changes, running `uaac` as the `ubuntu` user results in the error `/home/tempest-web/tempest/web/vendor/uaac/Gemfile not found`. To work around this issue, run `unalias uaac` as the `ubuntu` user before running `uaac`. <%= vars.ops_manager %> v2.10.10 and later fixes this issue.
 - **[Feature]** vSphere users have the option to use the Policy API when placing VMs in policy NSX-T groups by enabling **Use NSX-T Policy API** in the **vCenter Config** pane of the BOSH Director tile
 - **[Feature]** The **Putting Tile Credentials into CredHub** step of **Apply Changes** produces more diagnostic output
 - **[Bug Fix]** The **Internet Connected** checkbox appears on the **Resource Config** pane for AWS
