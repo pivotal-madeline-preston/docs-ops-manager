@@ -125,7 +125,7 @@ Consult the table below to determine what additional policies you may want to in
     </tr>
     <tr>
         <td>Use an AWS Instance Profile instead of AWS Keys.</td>
-        <td><pre class="code" style="max-height: 7em; max-width:30em; overflow: auto">
+        <td><p>Where I replace <code>IAM-INSTANCE-ARN-PROFILE</code> and <code>IAM-OPS-MANAGER-ARN-ROLE</code> with their respective values.</p><pre class="code" style="max-height: 7em; max-width:30em; overflow: auto">
 {
   "Sid": "AllowToGetInfoAboutCurrentInstanceProfile",
   "Effect": "Allow",
@@ -133,7 +133,7 @@ Consult the table below to determine what additional policies you may want to in
     "iam:GetInstanceProfile"
   ],
   "Resource": [
-    "${iam_instance_profile_arn}"
+    "IAM-INSTANCE-ARN-PROFILE"
   ]
 },
 {
@@ -143,9 +143,9 @@ Consult the table below to determine what additional policies you may want to in
     "iam:PassRole"
   ],
   "Resource": [
-    "${iam_ops_manager_role_arn}"
+    "IAM-OPS-MANAGER-ARN-ROLE"
   ]
-},
+},</pre>
         </td>
     </tr>
     <tr>
