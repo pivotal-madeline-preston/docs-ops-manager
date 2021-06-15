@@ -16,7 +16,7 @@ To handle customer-provided CAs, you can use one of two methods:
 
 - **Method One:** If the certificate rotation process is unstarted, see [Method One: Tell CredHub Maestro to Ignore Customer-Provided CAs](#method-one) below. 
 
-- **Method Two:** If you are already in the process of rotating certicates, see [Method Two: Manually Replace the Customer-Provided CAs](#method-two) below. You can use this procedure after encountering the following Maestro error:
+- **Method Two:** If you are already in the process of rotating certificates, see [Method Two: Manually Replace the Customer-Provided CAs](#method-two) below. You can use this procedure after encountering the following Maestro error:
    <pre>certificate authorities latest version is not transitional</pre>
 
 
@@ -81,7 +81,7 @@ The steps in this method are as follows:
 
 2. Use `credhub curl` on the `api/v1/certificates/:certificate_id/update_transitional_version` API endpoint to set the transitional flag for each customer-provided CA.
 
-Because there are already customer-provided CAs loaded into CredHub, it is assumed that you are familar with the `credhub set` command, so no further guidance on that command will be provided.
+Because there are already customer-provided CAs loaded into CredHub, it is assumed that you are familiar with the `credhub set` command, so no further guidance on that command will be provided.
 
 The structure of the `credhub curl` invocation to set the `transitional` flag on the CAs is as follows:
 
